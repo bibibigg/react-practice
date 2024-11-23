@@ -7,15 +7,17 @@ function App() {
   const [userInput, setUserInput] = useState({
     initialInvestment: 10000,
     annualInvestment: 1200,
-    expectReturn: 6,
+    expectedReturn: 6,
     duration: 10,
   });
+
+  const inputIsValid = userInput.duration >= 1;
 
   function handleChange(inputIdentifier, newValue) {
     setUserInput((prevUserInput) => {
       return {
         ...prevUserInput,
-        [inputIdentifier]: newValue,
+        [inputIdentifier]: +newValue,
       };
     });
   }
@@ -24,7 +26,8 @@ function App() {
     <main>
       <Header />
       <User userInput={userInput} onChangeInput={handleChange} />
-      <Result />
+      {!inputIsValid && <p className="center">1 이상의 숫자를 입력해 주세요</p>}
+      {inputIsValid && <Result userInput={userInput} />}
     </main>
   );
 }

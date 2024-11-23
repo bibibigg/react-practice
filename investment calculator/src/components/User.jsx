@@ -31,9 +31,9 @@ export default function User({ onChangeInput, userInput }) {
           <input
             type="number"
             required
-            value={userInput.expectReturn}
+            value={userInput.expectedReturn}
             onChange={(event) =>
-              onChangeInput("expectReturn", event.target.value)
+              onChangeInput("expectedReturn", event.target.value)
             }
           />
         </p>
