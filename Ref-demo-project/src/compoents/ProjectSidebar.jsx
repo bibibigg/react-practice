@@ -1,6 +1,6 @@
 import Button from "./Button.jsx";
 
-export default function ProjectSidebar() {
+export default function ProjectSidebar({ onStartAddProject }) {
   return (
     <>
       <aside className="px-8 py-16 bg-slate-900 text-stone-50 w-1/3 md:w-72 rounded-r-xl">
@@ -8,7 +8,7 @@ export default function ProjectSidebar() {
           Your Projects
         </h2>
         <div>
-          <Button>+ Add Project</Button>
+          <Button onClick={onStartAddProject}>+ Add Project</Button>
         </div>
         <ul>test</ul>
       </aside>
