@@ -2,6 +2,7 @@ import { useState } from "react";
 import NewProject from "./compoents/NewProject";
 import NoProjectSelected from "./compoents/NoProjectSelected";
 import ProjectSidebar from "./compoents/ProjectSidebar";
+import SelectedProject from "./compoents/SelectedProject";
 
 function App() {
   const [projectsState, setProjectsState] = useState({
@@ -9,11 +10,29 @@ function App() {
     projects: [],
   });
 
+  function handleSelectProject(id) {
+    setProjectsState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: id,
+      };
+    });
+  }
+
   function handleStartAddProject() {
     setProjectsState((prevState) => {
       return {
         ...prevState,
         selectedProjectId: null,
+      };
+    });
+  }
+
+  function handleCancelAddProject() {
+    setProjectsState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
       };
     });
   }
@@ -34,9 +53,34 @@ function App() {
     });
   }
 
-  let content;
+  function handleDeleteProject() {
+    setProjectsState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        projects: prevState.projects.filter(
+          (project) => project.id !== prevState.selectedProjectId
+        ),
+        //filter로 저장되어있는 기존의 배열을 바꾸지않고 업데이트함
+        //선택한 프로젝트id와 일치하지않으면 true를 반환하여 삭제되지않도록함
+      };
+    });
+  }
+
+  const selectedProject = projectsState.projects.find(
+    (project) => project.id === projectsState.selectedProjectId
+  );
+
+  let content = (
+    <SelectedProject project={selectedProject} onDelete={handleDeleteProject} />
+  );
+
+  //프로젝트가 있을경우 find를 사용하여 선택된 프로젝트id를 가지고 해당 프로젝트를 기본값으로 ui업데이트
+
   if (projectsState.selectedProjectId === null) {
-    content = <NewProject onAdd={handleAppProject} />;
+    content = (
+      <NewProject onAdd={handleAppProject} onCancel={handleCancelAddProject} />
+    );
   } else if (projectsState.selectedProjectId === undefined) {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
   }
@@ -46,6 +90,7 @@ function App() {
       <ProjectSidebar
         onStartAddProject={handleStartAddProject}
         projects={projectsState.projects}
+        onSelectProject={handleSelectProject}
       />
       {content}
     </main>
