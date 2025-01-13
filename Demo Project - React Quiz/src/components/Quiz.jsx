@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
 
-import quizCompleteImg from "../assets/quiz-complete.png";
 import QUESTIONS from "../questions";
 import Question from "./Question";
+import Summary from "./Summary";
 
 export default function Quiz() {
   const [userAnswers, setAnswers] = useState([]);
@@ -26,12 +26,7 @@ export default function Quiz() {
   );
 
   if (quizIsComplete) {
-    return (
-      <div id="summary">
-        <img src={quizCompleteImg} alt="Trophy icon" />
-        <h2>Quiz Complated!</h2>
-      </div>
-    );
+    return <Summary userAnswers={userAnswers} />;
   }
 
   //sort를 이용하여 answer배열을 랜덤하게 섞어준다
